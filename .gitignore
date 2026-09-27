@@ -1,2 +1,7 @@
 node_modules/
+**/cypress/reports/
+**/cypress/screenshots/
+**/cypress/videos/
+**/allure-results/
+**/allure-report/
 mockApi/db_stage.yaml

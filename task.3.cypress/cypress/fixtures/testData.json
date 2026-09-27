@@ -1,0 +1,16 @@
+{
+  "navigation": {
+    "menus": [
+      { "menuItem": "Products", "submenuLink": "Voice API" },
+      { "menuItem": "Solutions", "submenuLink": "Contact Center" }
+    ]
+  },
+  "footerColumns": {
+    "company": "COMPANY",
+    "legal": "LEGAL",
+    "compare": "COMPARE"
+  },
+  "aiChat": {
+    "messagePrefix": "Automated test message "
+  }
+}
