@@ -1,99 +1,53 @@
-# Mobile Automation on BrowserStack + WebdriverIO (task.8)
+# Appium + WebdriverIO: Mobile Test Automation on BrowserStack
 
-## What this project does
+[![Appium Mobile (BrowserStack)](https://github.com/Hrehoryjj/QA-Automation-Portfolio/actions/workflows/appium-mobile-browserstack.yml/badge.svg)](https://github.com/Hrehoryjj/QA-Automation-Portfolio/actions/workflows/appium-mobile-browserstack.yml)
 
-This project automatically tests the **Android-NativeDemoApp** mobile application.
-Instead of a person manually tapping through the app on a phone to check that
-everything works, a script does it — filling in forms, swiping screens, dragging
-items, and signing up a user — and then reports whether each check passed or failed.
+## What it is
+Automated tests for an **Android app** (Android-NativeDemoApp, included in this folder as an .apk). Instead of a person tapping through the app on a phone, the tests fill in forms, swipe screens, drag items into place and sign up a user, then report what passed.
 
-The tests don't run on a real physical phone in the office. They run on
-**BrowserStack**, a cloud service that provides real and virtual Android devices
-over the internet. This means anyone with the right access can run the same tests
-without owning the actual device.
+## Why it matters
+Real users have many different phones. The tests run on **real Android devices in the cloud (BrowserStack)**, on two models, so the app is checked across devices without owning them.
 
-There are 5 automated test cases covering different parts of the app: filling out
-a form, revealing hidden content by swiping, browsing a carousel, dragging elements
-into place, and signing up with a new account.
+## What is tested
+Form inputs, swipe gestures and a carousel, drag and drop, and user sign-up. Each check is written as an ISTQB-style test case, with random input data generated for every run.
 
-## What you need before starting
+## How it is built
+| Part | Tool |
+|---|---|
+| Mobile automation | Appium (via WebdriverIO) |
+| Device cloud | BrowserStack App Automate |
+| Devices | Samsung Galaxy S22 Ultra, Google Pixel 8 Pro |
+| Structure | Page Object Model, locators found with Appium Inspector |
+| Test data | Faker (random data) |
+| Report | Allure |
+| CI/CD | GitHub Actions, BrowserStack credentials kept in GitHub Secrets |
 
-- A computer with **Node.js** installed (version 18 or newer). This is the engine
-  that runs the test scripts.
-- A **BrowserStack account** (username + access key). This is what gives the tests
-  access to a cloud device to run on.
-- **Git**, to download the project.
-- A terminal (Command Prompt, Git Bash, or similar) to type commands into.
+## Test report
+Latest report: **[https://hrehoryjj.github.io/QA-Automation-Portfolio/appium-mobile-browserstack/](https://hrehoryjj.github.io/QA-Automation-Portfolio/appium-mobile-browserstack/)**
 
-None of this requires programming knowledge — the steps below are copy-paste
-commands.
-
-## How to install everything (one-time setup)
-
-1. Download (clone) the project folder to your computer using Git.
-2. Open a terminal inside the project folder and run:
-   ```bash
-   npm install
-   ```
-   This downloads all the tools the tests need to run. It can take a minute or two.
-3. Create a file named `.env` in the project folder (a plain text file, no
-   extension tricks needed) with the following content, replacing the placeholders
-   with real BrowserStack credentials:
-   ```
-   BROWSERSTACK_USERNAME=your_username
-   BROWSERSTACK_ACCESS_KEY=your_access_key
-   BROWSERSTACK_APP_ID=bs://NativeDemoApp
-   ```
-   These credentials tell BrowserStack who is requesting a device and which app to
-   test. They are private — this file should never be shared or uploaded publicly.
-4. If the app hasn't been uploaded to BrowserStack yet, upload it once with this
-   command (only needs to be done the first time, or whenever the app itself changes):
-   ```bash
-   curl -u "$BROWSERSTACK_USERNAME:$BROWSERSTACK_ACCESS_KEY" \
-     -X POST "https://api-cloud.browserstack.com/app-automate/upload" \
-     -F "file=@Android-NativeDemoApp-0.4.0.apk" \
-     -F "custom_id=NativeDemoApp"
-   ```
-
-## How to run the tests
-
-There are two ready-made configurations, each targeting a different phone model
-(this checks that the app behaves consistently across devices). Run either one —
-or both, one after another.
-
-Run on device configuration 1 (Samsung Galaxy S22 Ultra):
+## Run it locally
+Requires Node.js 18+, Git and a BrowserStack account.
 ```bash
-npm run wdio
+git clone https://github.com/Hrehoryjj/QA-Automation-Portfolio.git
+cd QA-Automation-Portfolio/appium-mobile-browserstack
+npm install
 ```
-
-Run on device configuration 2 (Google Pixel 8 Pro):
+Create a `.env` file in this folder with your BrowserStack credentials (never commit it):
+```
+BROWSERSTACK_USERNAME=your_username
+BROWSERSTACK_ACCESS_KEY=your_access_key
+BROWSERSTACK_APP_ID=bs://NativeDemoApp
+```
+Upload the app once:
 ```bash
-npm run wdio:device2
+curl -u "$BROWSERSTACK_USERNAME:$BROWSERSTACK_ACCESS_KEY" \
+  -X POST "https://api-cloud.browserstack.com/app-automate/upload" \
+  -F "file=@Android-NativeDemoApp-0.4.0.apk" -F "custom_id=NativeDemoApp"
 ```
-
-Run on both, one after another:
+Run and open the report:
 ```bash
-npm run wdio:all
+npm run wdio            # device 1
+npm run wdio:device2    # device 2
+npm run wdio:all        # both
+npm run report          # builds and opens the Allure report
 ```
-
-To run just one specific test instead of all 5, add `--spec` and the file name, for
-example:
-```bash
-npm run wdio -- --spec e2e/specs/forms.specs.js
-```
-
-While the command is running, it connects to a BrowserStack device in the cloud,
-opens the app, and performs the test steps automatically. This typically takes a
-few minutes depending on how many tests are run.
-
-## How to see the results (report)
-
-After a test run finishes, generate a readable report with:
-```bash
-npm run report
-```
-
-This builds an HTML report from the run's results and opens it automatically in
-your browser. The report shows, for each test case, whether it passed or failed,
-how long it took, and — for failed tests — screenshots and details of what went
-wrong, which is useful for sharing with the development team.

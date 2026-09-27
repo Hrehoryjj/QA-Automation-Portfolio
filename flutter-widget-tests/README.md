@@ -1,72 +1,38 @@
-# Spendy — Widget Testing (Task 9)
+# Flutter Widget Tests: Mobile App Test Automation
 
-## Summary
+[![Flutter Widget Tests](https://github.com/Hrehoryjj/QA-Automation-Portfolio/actions/workflows/flutter-widget-tests.yml/badge.svg)](https://github.com/Hrehoryjj/QA-Automation-Portfolio/actions/workflows/flutter-widget-tests.yml)
 
-This project contains automated tests for **Spendy**, a demo expense-tracking
-mobile app built with Flutter. The tests check that the app's main screens
-and actions behave correctly — for example, that tapping "Add" opens the
-right form, that typed text actually appears where it should, that saving a
-transaction works, and that search and filters return the expected results.
+## What it is
+Automated tests for **Spendy**, a demo expense-tracking mobile app built with Flutter. The tests simulate a user tapping, typing and searching through the app's screens and check that each action gives the right result.
 
-These are called **widget tests**: instead of installing the app on a phone
-and clicking through it manually, the tests run automatically and simulate a
-user tapping, typing, and swiping through the app's screens. This makes it
-possible to catch broken behavior quickly, every time the code changes,
-without a human having to retest everything by hand.
+## Why it matters
+Widget tests run in seconds on a regular computer, with no phone or emulator. That makes them cheap to run on every code change, so broken behavior is caught before the app reaches a device.
 
-The test suite covers 10 scenarios in total — 5 required ones (adding a
-transaction, viewing a transaction's details, searching) and 5 additional
-ones written to cover extra everyday actions (filtering by category, saving
-a new transaction and seeing it appear in the list, editing the budget, and
-so on).
+## What is tested
+- **Home screen:** opening the Add Transaction form, opening transaction details, filtering by category and clearing the filter, editing the balance.
+- **Search:** filtering the list by text, and an empty result when nothing matches.
+- **Add Transaction:** typing a title, saving a transaction, and seeing the new transaction in the list.
 
-## Requirements
+Tests find elements through the app's stable Widget Keys, not visible text, so they do not break when wording changes. While writing them, a real bug in the app was found and fixed: all category chips shared the same key, so tests could not tell them apart.
 
-To run this project you need:
+## How it is built
+| Part | Tool |
+|---|---|
+| Framework | Flutter test (`flutter_test`) |
+| Language | Dart |
+| Structure | Tests grouped by screen with `group()` and shared `setUp()` |
+| CI/CD | GitHub Actions: runs all tests on every push |
 
-- **Flutter** installed on your machine (version 3.0 or newer) — this is the
-  toolkit the app and its tests are built with. Installation guide:
-  https://docs.flutter.dev/get-started/install
-- **Git**, to download the project
+## Test results
+Every run is visible in **[GitHub Actions](https://github.com/Hrehoryjj/QA-Automation-Portfolio/actions/workflows/flutter-widget-tests.yml)**: the "Run widget tests" step lists each test and its result.
 
-No phone, emulator, or Flutter development experience is required to just
-run the tests — they run entirely on your computer in a few seconds.
-
-## How to Set It Up
-
-1. Download the project:
-   ```bash
-   git clone <repository-url>
-   cd task.9
-   ```
-2. Install the app's dependencies (this downloads everything the app needs
-   to run):
-   ```bash
-   flutter pub get
-   ```
-
-## How to Run the Tests
-
-From inside the project folder, run:
-
+## Run it locally
+Requires Flutter 3.x and Git.
 ```bash
-flutter test test/widget_test.dart
+git clone https://github.com/Hrehoryjj/QA-Automation-Portfolio.git
+cd QA-Automation-Portfolio/flutter-widget-tests
+flutter pub get
+flutter test test/widget_test.dart                   # all tests
+flutter test test/widget_test.dart --name "TC-01"    # one test
 ```
-
-You'll see a list of test names scroll by, each marked with a checkmark if
-it passed. If everything is working correctly, you'll see something like:
-
-```
-00:03 +10: All tests passed!
-```
-
-If a test fails, Flutter will print which one and why — usually pointing to
-the exact screen element and expected vs. actual result, which makes it easy
-to spot what changed in the app.
-
-To run just one test (useful when checking a single fix), use its name from
-the list, for example:
-
-```bash
-flutter test test/widget_test.dart --name "TC-01"
-```
+A successful run ends with `All tests passed!`.
