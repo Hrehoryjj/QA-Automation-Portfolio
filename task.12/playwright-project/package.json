@@ -1,0 +1,16 @@
+{
+  "name": "playwright-project",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "playwright test",
+    "test:claude": "playwright test tests/claude-code",
+    "test:cursor": "playwright test tests/cursor",
+    "test:stability": "playwright test --repeat-each=10 --retries=0",
+    "report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "@types/node": "^22.20.4",
+    "typescript": "^5.7.2"
+  }
+}

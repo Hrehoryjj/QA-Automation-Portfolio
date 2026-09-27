@@ -1,0 +1,35 @@
+name: Task 12 Cypress Tests
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: task.12/cypress-project/package-lock.json
+
+      - name: Install dependencies
+        working-directory: task.12/cypress-project
+        run: npm ci
+
+      - name: Run Cypress tests
+        working-directory: task.12/cypress-project
+        run: npx cypress run --record
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+
+      - name: Upload Cypress mochawesome report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cypress-mochawesome-report
+          path: task.12/cypress-project/cypress/reports/
+          retention-days: 14

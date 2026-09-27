@@ -1,0 +1,13 @@
+{
+  "name": "cypress-project",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "cypress run"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "cypress": "^15.21.1",
+    "cypress-mochawesome-reporter": "^3.8.2",
+    "typescript": "^5.7.2"
+  }
+}
