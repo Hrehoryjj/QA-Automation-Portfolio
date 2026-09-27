@@ -1,0 +1,6 @@
+{
+  "validContactUser": {
+    "phone": "5551234567",
+    "email": "qa.automation.test@example.com"
+  }
+}

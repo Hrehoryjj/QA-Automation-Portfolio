@@ -11,4 +11,10 @@ cypress/downloads/
 .env
 npm-debug.log*
 .DS_Store
+allure-results/
+allure-report/
+.env.*
+*.log
+dist/
+errorShots/
 mockApi/db_stage.yaml
