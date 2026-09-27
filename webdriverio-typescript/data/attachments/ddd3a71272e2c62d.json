@@ -1,0 +1,4 @@
+{
+  "using": "xpath",
+  "value": ".//div[contains(concat(\" \",@class,\" \"), \" typography-p-caption-mobile \") and contains(., \"ISO\") and not(.//div[contains(concat(\" \",@class,\" \"), \" typography-p-caption-mobile \")])]"
+}
