@@ -36,8 +36,11 @@ export class HomePage extends BasePage {
     scrollToUseCaseSection(): void {
         this.useCaseSectionHeading.scrollIntoView();
     }
+    // telnyx.com serves more than one homepage layout, and the contact button's
+    // text differs between them; the link target is stable, so match by href and
+    // take the first link a visitor can actually see.
     protected get contactUsButton() {
-        return cy.contains('a, button', 'Contact us');
+        return cy.get('a[href$="/contact-us"]:visible').first();
     }
     clickContactUsButton(): void {
         this.contactUsButton.click();

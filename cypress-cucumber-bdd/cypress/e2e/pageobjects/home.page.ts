@@ -1,6 +1,13 @@
 import { BasePage } from './base.page';
 
 export class HomePage extends BasePage {
+    // Matched by href, not text: the contact button's label differs between the
+    // homepage layouts telnyx.com serves, while the link target stays the same.
+    private static readonly CONTACT_US_LINK = 'a[href$="/contact-us"]:visible';
+
+    clickContactUsLink(): void {
+        cy.get(HomePage.CONTACT_US_LINK).first().click();
+    }
     navigateToHome(): void {
         this.navigateTo('/');
     }

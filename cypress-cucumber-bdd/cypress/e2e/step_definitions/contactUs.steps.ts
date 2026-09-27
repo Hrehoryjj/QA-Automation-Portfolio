@@ -1,10 +1,15 @@
 import { Given, When, Then } from '@badeball/cypress-cucumber-preprocessor';
 import { faker } from '@faker-js/faker';
 import { ContactUsPage } from '../pageobjects/contactUs.page';
+import { HomePage } from '../pageobjects/home.page';
 
 const contactUsPage = new ContactUsPage();
+const homePage = new HomePage();
 let generatedSymbol: string;
 
+When('I click the Contact Us link', () => {
+  homePage.clickContactUsLink();
+});
 Given('I am on the contact-us page', () => {
   contactUsPage.visitContactUs();
 });

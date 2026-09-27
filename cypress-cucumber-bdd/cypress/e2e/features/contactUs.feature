@@ -3,7 +3,7 @@ Feature: Contact Us page
   @TC-12
   Scenario: Contact Us Submit Button Is Clickable
     Given I am on the home page
-    When I click on "TALK TO AN EXPERT"
+    When I click the Contact Us link
     Then I should be redirected to the "/contact-us" page
     And the submit button should be clickable
 
