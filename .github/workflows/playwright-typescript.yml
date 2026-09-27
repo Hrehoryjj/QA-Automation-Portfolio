@@ -61,7 +61,21 @@ jobs:
           allure generate allure-results --clean -o allure-report
 
       - name: Publish report to GitHub Pages
+        id: deploy
+        continue-on-error: true
         if: ${{ !cancelled() }}
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: playwright-typescript/allure-report
+          destination_dir: playwright-typescript
+
+      - name: Retry publish if another project published at the same time
+        if: ${{ !cancelled() && steps.deploy.outcome == 'failure' }}
+        run: sleep 30
+
+      - name: Publish report to GitHub Pages (retry)
+        if: ${{ !cancelled() && steps.deploy.outcome == 'failure' }}
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

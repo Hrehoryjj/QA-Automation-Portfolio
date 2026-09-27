@@ -53,7 +53,21 @@ jobs:
           path: appium-mobile-browserstack/allure-report
 
       - name: Publish report to GitHub Pages
+        id: deploy
+        continue-on-error: true
         if: always()
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: appium-mobile-browserstack/allure-report
+          destination_dir: appium-mobile-browserstack
+
+      - name: Retry publish if another project published at the same time
+        if: ${{ !cancelled() && steps.deploy.outcome == 'failure' }}
+        run: sleep 30
+
+      - name: Publish report to GitHub Pages (retry)
+        if: ${{ !cancelled() && steps.deploy.outcome == 'failure' }}
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
