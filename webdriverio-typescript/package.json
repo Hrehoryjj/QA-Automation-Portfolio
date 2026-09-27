@@ -1,5 +1,5 @@
 {
-  "name": "task.7",
+  "name": "webdriverio-typescript",
   "type": "module",
   "devDependencies": {
     "@faker-js/faker": "^10.6.0",

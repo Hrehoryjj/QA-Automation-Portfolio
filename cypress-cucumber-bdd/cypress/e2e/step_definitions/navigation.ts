@@ -24,7 +24,7 @@ Then('the dropdown should appear', () => {
 });
 // The homepage's AI-model tabs (role="tab", fixed names like Inference/
 // Voice Agent Builder/...) were redesigned into a "SELECT USE CASE" button
-// group (button[aria-pressed]) - same widget as task.7/task.3.cypress
+// group (button[aria-pressed]) - same widget as webdriverio-typescript/cypress-typescript
 // already confirmed against the live site. The old tab names no longer
 // exist, so these steps check the current widget's real contract instead.
 When('I scroll to the AI agents tabs', () => {

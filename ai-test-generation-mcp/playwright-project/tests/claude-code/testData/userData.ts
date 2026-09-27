@@ -51,7 +51,7 @@ export function generateUser(): UserData {
     specialOffers: true,
     firstName: 'QA',
     lastName: `Tester${unique}`,
-    company: 'LuxeQuality',
+    company: 'Portfolio QA',
     address: '123 Automation Street',
     address2: 'Suite 4B',
     country: 'United States',

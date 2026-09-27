@@ -18,7 +18,7 @@ export class ContactUsPage extends BasePage {
     }
     // The OneTrust consent widget only renders for regions/sessions OneTrust
     // flags as needing consent, which varies with the CI runner's IP - not
-    // something the test controls (same behavior task.7's TC-20 documents).
+    // something the test controls (same behavior the webdriverio-typescript project's TC-20 documents).
     // Poll for it instead of asserting immediately, and report whether it
     // showed up at all so the caller can skip verification gracefully.
     isCookieWidgetPresent(timeoutMs = 4000): Cypress.Chainable<boolean> {

@@ -41,7 +41,7 @@ Then('the fields should be empty', () => {
   });
 });
 // The OneTrust consent widget only shows for regions/sessions it flags as
-// needing consent, which the CI runner's IP doesn't control (task.7's
+// needing consent, which the CI runner's IP doesn't control (the webdriverio-typescript project's
 // TC-20 documents the same behavior). When it's absent for this run, the
 // remaining steps in this scenario have nothing to verify and skip cleanly
 // instead of failing on a widget that was never going to appear.

@@ -54,7 +54,7 @@ export class HomePage extends BasePage {
         // button[aria-pressed] isn't scoped to just this section - other
         // toggle buttons elsewhere on the page can match too, and unlike
         // this section's buttons they may not be visible/on-screen. Only
-        // the visible ones belong to the widget under test here (task.7's
+        // the visible ones belong to the widget under test here (the webdriverio-typescript project's
         // areAllUseCaseButtonsClickable does the same visible-only filter).
         return cy.get('button[aria-pressed]:visible');
     }

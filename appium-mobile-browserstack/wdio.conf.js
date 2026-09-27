@@ -24,9 +24,9 @@ exports.config = {
 
   commonCapabilities: {
     'bstack:options': {
-      projectName: 'LuxeQuality task.8',
+      projectName: 'Appium Mobile BrowserStack',
       buildName: 'Mobile Automation Build - Device 1',
-      sessionName: 'task.8 run - Galaxy S22 Ultra',
+      sessionName: 'Test run - Galaxy S22 Ultra',
       debug: true,
     }
   },

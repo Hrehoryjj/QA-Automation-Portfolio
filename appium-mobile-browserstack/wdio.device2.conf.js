@@ -24,9 +24,9 @@ exports.config = {
 
   commonCapabilities: {
     'bstack:options': {
-      projectName: 'LuxeQuality task.8',
+      projectName: 'Appium Mobile BrowserStack',
       buildName: 'Mobile Automation Build - Device 2',
-      sessionName: 'task.8 run - Pixel 8 Pro',
+      sessionName: 'Test run - Pixel 8 Pro',
       debug: true,
     }
   },
