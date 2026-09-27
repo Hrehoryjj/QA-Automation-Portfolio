@@ -1,0 +1,8 @@
+pytest>=8.3.0
+pytest-playwright>=0.5.2
+playwright>=1.47.0
+pytest-xdist>=3.6.1
+pytest-rerunfailures>=14.0
+allure-pytest>=2.13.5
+faker>=28.0.0
+python-dotenv>=1.0.1
