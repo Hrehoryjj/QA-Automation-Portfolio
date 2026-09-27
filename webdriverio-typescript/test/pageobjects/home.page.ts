@@ -177,15 +177,22 @@ class HomePage extends BasePage {
   }
 
 
-  async getFooterColumnLinks(columnTitle: string): Promise<string[]> {
-    const column = this.footerContainer.$(HomePage.FOOTER_COLUMN_HEADING_SELECTOR(columnTitle)).$('..');
-    const links = await column.$$(HomePage.LINKS_WITH_HREF);
-    const hrefs: string[] = [];
-    for (const link of links) {
-      const href = await link.getAttribute('href');
-      if (href) hrefs.push(href.startsWith('http') ? href : `https://telnyx.com${href}`);
+  // Accepts several possible column titles and uses the first one present in the
+  // visible footer: telnyx.com serves two footer layouts, and in the newer one the
+  // legal pages sit under "Resources" instead of a separate "Legal" column.
+  async getFooterColumnLinks(...columnTitles: string[]): Promise<string[]> {
+    for (const columnTitle of columnTitles) {
+      const heading = this.footerContainer.$(HomePage.FOOTER_COLUMN_HEADING_SELECTOR(columnTitle));
+      if (!(await heading.isExisting())) continue;
+      const links = await heading.$('..').$$(HomePage.LINKS_WITH_HREF);
+      const hrefs: string[] = [];
+      for (const link of links) {
+        const href = await link.getAttribute('href');
+        if (href) hrefs.push(href.startsWith('http') ? href : `https://telnyx.com${href}`);
+      }
+      return [...new Set(hrefs)];
     }
-    return [...new Set(hrefs)];
+    return [];
   }
 
   async getSocialLinkTarget(hostFragment: string) {

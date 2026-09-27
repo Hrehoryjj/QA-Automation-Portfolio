@@ -15,6 +15,7 @@ test.describe("Issues Page", () => {
     await issuesPage.applyFiltersAndOptions();
     
     const coordinatorCells = await issuesPage.coordinatorCells.allTextContents();
+    expect(coordinatorCells.length).toBeGreaterThan(0);
     expect(coordinatorCells.every(cell => cell.trim() === "Defect")).toBeTruthy();
   });
 
@@ -25,6 +26,7 @@ test.describe("Issues Page", () => {
     await issuesPage.applyFiltersAndOptions();
 
     const authorCells = await issuesPage.authorCells.allTextContents();
+    expect(authorCells.length).toBeGreaterThan(0);
     expect(authorCells.every(cell => cell.includes("Go MAEDA"))).toBeTruthy();
   });
 });

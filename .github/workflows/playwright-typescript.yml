@@ -40,6 +40,7 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run Playwright tests
+        id: tests
         run: npx playwright test
         continue-on-error: true
 
@@ -81,3 +82,9 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: playwright-typescript/allure-report
           destination_dir: playwright-typescript
+
+      - name: Fail the run if any test failed
+        if: ${{ !cancelled() && steps.tests.outcome == 'failure' }}
+        run: |
+          echo "Some tests failed - see the Allure report for details."
+          exit 1

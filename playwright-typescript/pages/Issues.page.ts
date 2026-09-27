@@ -68,7 +68,12 @@ export class IssuesPage extends BasePage {
         await this.addColumnButton.click();
     }
 
+    // Apply submits the filter form and reloads the list; wait for the filtered
+    // page so the table is read after the reload, not from the old list.
     async applyFiltersAndOptions() {
-        await this.applyButton.click();
+        await Promise.all([
+            this.page.waitForURL(/set_filter=1/),
+            this.applyButton.click(),
+        ]);
     }
 };

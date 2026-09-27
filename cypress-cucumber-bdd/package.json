@@ -25,7 +25,7 @@
       "cypress/e2e/step_definitions/**/*.ts"
     ],
     "html": {
-      "enabled": true,
+      "enabled": false,
       "output": "cypress/reports/index.html"
     }
   }

@@ -31,11 +31,12 @@ Cypress.on('window:before:load', (win) => {
 
 // Safety net in case some other page script still throws the same class of
 // cross-origin noise; a real bug in our own page code still fails the test
-// with an actual message/stack trace.
+// with an actual message/stack trace. Cypress wraps the original "Script error."
+// in a longer message, so match it as a substring, not the exact text.
 Cypress.on('uncaught:exception', (err) => {
   if (
     err.message.includes('document.modelContext cannot be used when document.domain is enabled') ||
-    err.message === 'Script error.'
+    err.message.includes('Script error.')
   ) {
     return false;
   }
