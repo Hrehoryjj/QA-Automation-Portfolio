@@ -31,4 +31,4 @@ This repository collects my test automation projects: web, API, mobile and AI te
 3. To run the tests yourself, follow "Run it locally" in the project README.
 
 ## Contact
-markevych.hr@gmail.com
+[LinkedIn](https://www.linkedin.com/in/hryhorii-markevych-543b33164/) | markevych.hr@gmail.com
