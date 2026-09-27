@@ -4,4 +4,11 @@ node_modules/
 **/cypress/videos/
 **/allure-results/
 **/allure-report/
+cypress/reports/
+cypress/screenshots/
+cypress/videos/
+cypress/downloads/
+.env
+npm-debug.log*
+.DS_Store
 mockApi/db_stage.yaml

@@ -1,0 +1,41 @@
+name: Task 4 Cypress Cucumber CI
+
+on:
+  push:
+    paths:
+      - 'task.4/**'
+  pull_request:
+    paths:
+      - 'task.4/**'
+
+permissions:
+  contents: write
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: task.4
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Cypress Tests
+        run: npm run cypress:run
+
+      - name: Deploy Report to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./task.4/cypress/reports
