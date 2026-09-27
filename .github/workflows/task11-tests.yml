@@ -1,0 +1,65 @@
+name: task.11 llm-tests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'task.11/**'
+      - '.github/workflows/task11-tests.yml'
+  pull_request:
+    paths:
+      - 'task.11/**'
+      - '.github/workflows/task11-tests.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: task11-llm-tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: task.11
+    env:
+      LOCAL_LLM_BASE_URL: http://localhost:11434/v1
+      LOCAL_LLM_MODEL: qwen2.5:7b-instruct
+      LOCAL_LLM_API_KEY: ollama
+      DEEPEVAL_PER_TASK_TIMEOUT_SECONDS_OVERRIDE: '600'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: task.11/requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install Ollama
+        run: curl -fsSL https://ollama.com/install.sh | sh
+
+      - name: Start Ollama server
+        run: |
+          nohup ollama serve > ollama.log 2>&1 &
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:11434/api/tags > /dev/null && break
+            sleep 2
+          done
+
+      - name: Pull model
+        run: ollama pull "$LOCAL_LLM_MODEL"
+
+      - name: Run tests
+        run: pytest -v --reruns 1 --reruns-delay 5 --junitxml=report.xml
+
+      - name: Upload test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: report
+          path: task.11/report.xml
+          retention-days: 7
