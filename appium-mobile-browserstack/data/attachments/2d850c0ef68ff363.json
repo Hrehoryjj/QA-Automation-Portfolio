@@ -1,0 +1,4 @@
+{
+  "using": "xpath",
+  "value": "//*[@text=\"You made it, click retry if you want to try it again.\"]"
+}
