@@ -1,0 +1,60 @@
+name: Cypress (TypeScript)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'cypress-typescript/**'
+      - '.github/workflows/cypress-typescript.yml'
+  pull_request:
+    paths:
+      - 'cypress-typescript/**'
+      - '.github/workflows/cypress-typescript.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: cypress-typescript
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: cypress-typescript/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Cypress tests
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: cypress-typescript
+          browser: chrome
+
+      - name: Generate Allure report
+        if: always()
+        run: npm run report:generate
+
+      - name: Publish report to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./cypress-typescript/allure-report
+          destination_dir: cypress-typescript
+
+      - name: Upload screenshots on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-screenshots
+          path: cypress-typescript/cypress/screenshots
+          retention-days: 7

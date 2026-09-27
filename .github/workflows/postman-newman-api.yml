@@ -1,0 +1,41 @@
+name: Postman + Newman (API)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'postman-newman-api/**'
+      - '.github/workflows/postman-newman-api.yml'
+  pull_request:
+    paths:
+      - 'postman-newman-api/**'
+      - '.github/workflows/postman-newman-api.yml'
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: postman-newman-api
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm i
+
+      - name: Start local API server
+        run: npm run turn-on-api &
+
+      - name: Wait for server
+        run: sleep 5
+
+      - name: Install Newman
+        run: npm i -g newman
+
+      - name: Run API tests
+        run: newman run store.collection.json

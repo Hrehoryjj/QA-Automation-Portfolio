@@ -1,0 +1,59 @@
+name: WebdriverIO (TypeScript)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'webdriverio-typescript/**'
+      - '.github/workflows/webdriverio-typescript.yml'
+  pull_request:
+    paths:
+      - 'webdriverio-typescript/**'
+      - '.github/workflows/webdriverio-typescript.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t webdriverio-typescript ./webdriverio-typescript
+
+      - name: Run tests in Docker (Chrome, headless)
+        run: |
+          mkdir -p webdriverio-typescript/allure-results webdriverio-typescript/errorShots
+          docker run --rm \
+            -v ${{ github.workspace }}/webdriverio-typescript/allure-results:/app/allure-results \
+            -v ${{ github.workspace }}/webdriverio-typescript/errorShots:/app/errorShots \
+            webdriverio-typescript
+
+      - name: Upload screenshots on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: failure-screenshots
+          path: webdriverio-typescript/errorShots/
+
+      - uses: actions/setup-node@v4
+        if: always()
+        with:
+          node-version: '22'
+
+      - name: Generate Allure report
+        if: always()
+        run: |
+          npm install -g allure-commandline
+          allure generate webdriverio-typescript/allure-results --clean -o allure-report
+
+      - name: Publish report to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: allure-report
+          destination_dir: webdriverio-typescript

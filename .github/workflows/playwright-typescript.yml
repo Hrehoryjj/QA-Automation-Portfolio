@@ -1,0 +1,69 @@
+name: Playwright (TypeScript)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'playwright-typescript/**'
+      - '.github/workflows/playwright-typescript.yml'
+  pull_request:
+    paths:
+      - 'playwright-typescript/**'
+      - '.github/workflows/playwright-typescript.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: playwright-typescript-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: playwright-typescript
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Run Playwright tests
+        run: npx playwright test
+        continue-on-error: true
+
+      - name: Get Allure history from GitHub Pages
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: gh-pages-dir
+
+      - name: Generate Allure report
+        if: ${{ !cancelled() }}
+        run: |
+          npm install -g allure-commandline
+          mkdir -p allure-results
+          if [ -d "../gh-pages-dir/playwright-typescript/history" ]; then
+            cp -r ../gh-pages-dir/playwright-typescript/history allure-results/
+          fi
+          allure generate allure-results --clean -o allure-report
+
+      - name: Publish report to GitHub Pages
+        if: ${{ !cancelled() }}
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: playwright-typescript/allure-report
+          destination_dir: playwright-typescript

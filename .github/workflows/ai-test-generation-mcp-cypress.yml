@@ -1,4 +1,4 @@
-name: Task 12 Cypress Tests
+name: AI Test Generation (Cypress cy.prompt)
 
 on:
   workflow_dispatch:
@@ -14,14 +14,14 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: task.12/cypress-project/package-lock.json
+          cache-dependency-path: ai-test-generation-mcp/cypress-project/package-lock.json
 
       - name: Install dependencies
-        working-directory: task.12/cypress-project
+        working-directory: ai-test-generation-mcp/cypress-project
         run: npm ci
 
       - name: Run Cypress tests
-        working-directory: task.12/cypress-project
+        working-directory: ai-test-generation-mcp/cypress-project
         run: npx cypress run --record
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
@@ -31,5 +31,5 @@ jobs:
         if: always()
         with:
           name: cypress-mochawesome-report
-          path: task.12/cypress-project/cypress/reports/
+          path: ai-test-generation-mcp/cypress-project/cypress/reports/
           retention-days: 14

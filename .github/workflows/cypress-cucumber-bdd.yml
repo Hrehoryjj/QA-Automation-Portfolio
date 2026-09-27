@@ -1,0 +1,43 @@
+name: Cypress + Cucumber (BDD)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'cypress-cucumber-bdd/**'
+      - '.github/workflows/cypress-cucumber-bdd.yml'
+  pull_request:
+    paths:
+      - 'cypress-cucumber-bdd/**'
+      - '.github/workflows/cypress-cucumber-bdd.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: cypress-cucumber-bdd
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Cypress tests
+        run: npm run cypress:run
+
+      - name: Publish report to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./cypress-cucumber-bdd/cypress/reports
+          destination_dir: cypress-cucumber-bdd
