@@ -1,0 +1,9 @@
+# Language stats: the Flutter app under test and its generated platform folders
+# are not test code, so GitHub should not count them (otherwise the repo shows as Dart).
+flutter-widget-tests/lib/** linguist-vendored
+flutter-widget-tests/android/** linguist-vendored
+flutter-widget-tests/ios/** linguist-vendored
+flutter-widget-tests/linux/** linguist-vendored
+flutter-widget-tests/macos/** linguist-vendored
+flutter-widget-tests/windows/** linguist-vendored
+flutter-widget-tests/web/** linguist-vendored

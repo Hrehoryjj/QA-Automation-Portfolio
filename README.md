@@ -4,8 +4,16 @@ Hryhorii Markevych
 
 This repository collects my test automation projects: web, API, mobile and AI testing. Each folder is a separate, working project with its own tests, CI pipeline and a README explaining what it does, why and how to run it.
 
+## Start here
+Short on time? These three show the most in five minutes:
+1. **[playwright-python-pytest](playwright-python-pytest)** - full regression of an online shop on three browsers, parallel runs, Allure report and Slack alerts.
+2. **[webdriverio-typescript](webdriverio-typescript)** - E2E suite that runs the same way locally and in CI thanks to Docker.
+3. **[ai-test-generation-mcp](ai-test-generation-mcp)** - AI agents writing tests, and how their output was verified before it was trusted.
+
+All latest reports in one place: **[test reports page](https://hrehoryjj.github.io/QA-Automation-Portfolio/)**.
+
 ## What you will find here
-- **Web UI automation** in four frameworks: Playwright (TypeScript and Python), Cypress, WebdriverIO
+- **Web UI automation** in three frameworks: Playwright (TypeScript and Python), Cypress, WebdriverIO
 - **API testing** with Postman and Newman
 - **Mobile testing** on real cloud devices (Appium, BrowserStack) and Flutter widget tests
 - **AI testing:** checking the quality and safety of LLM answers, and generating tests with AI agents under strict review
@@ -29,6 +37,12 @@ This repository collects my test automation projects: web, API, mobile and AI te
 1. Open the project folder and read its README: what it tests and why, in plain language.
 2. Click **Report** in the table above to see the latest test results in the browser, no setup needed.
 3. To run the tests yourself, follow "Run it locally" in the project README.
+
+## Portfolio plan
+Next step: bring my standalone projects up to the standard of this repo (CI, reports, README) and add them here:
+- Java + Selenium + REST Assured (UI and API)
+- Playwright + TypeScript hybrid framework (API and UI)
+- WebdriverIO + TypeScript E2E suite
 
 ## Contact
 [LinkedIn](https://www.linkedin.com/in/hryhorii-markevych-543b33164/) | markevych.hr@gmail.com
