@@ -1,3 +1,5 @@
+import { faker } from '@faker-js/faker';
+
 export type UserTitle = 'Mr.' | 'Mrs.';
 
 export interface UserData {
@@ -22,6 +24,16 @@ export interface UserData {
   mobileNumber: string;
 }
 
+const SITE_COUNTRIES = [
+  'India',
+  'United States',
+  'Canada',
+  'Australia',
+  'Israel',
+  'New Zealand',
+  'Singapore',
+];
+
 function generatePassword(): string {
   const upper = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
   const lower = 'abcdefghijkmnopqrstuvwxyz';
@@ -36,28 +48,37 @@ function generatePassword(): string {
   return [...required, ...rest].sort(() => Math.random() - 0.5).join('');
 }
 
+export function generateEmail(): string {
+  return faker.internet
+    .email({ provider: 'example-mail.test', allowSpecialCharacters: false })
+    .replace('@', `.${Date.now()}@`)
+    .toLowerCase();
+}
+
 export function generateUser(): UserData {
-  const unique = `${Date.now()}${Math.floor(Math.random() * 10_000)}`;
+  const firstName = faker.person.firstName();
+  const lastName = faker.person.lastName();
+  const birthDate = faker.date.birthdate({ min: 18, max: 60, mode: 'age' });
 
   return {
-    title: 'Mr.',
-    name: `QA Tester ${unique}`,
-    email: `qa.tester.${unique}@example-mail.test`,
+    title: faker.helpers.arrayElement<UserTitle>(['Mr.', 'Mrs.']),
+    name: `${firstName} ${lastName}`,
+    email: generateEmail(),
     password: generatePassword(),
-    birthDay: '15',
-    birthMonth: 'May',
-    birthYear: '1995',
-    newsletter: true,
-    specialOffers: true,
-    firstName: 'QA',
-    lastName: `Tester${unique}`,
-    company: 'Portfolio QA',
-    address: '123 Automation Street',
-    address2: 'Suite 4B',
-    country: 'United States',
-    state: 'California',
-    city: 'San Francisco',
-    zipcode: '94105',
-    mobileNumber: '5551234567',
+    birthDay: String(Math.min(birthDate.getDate(), 28)),
+    birthMonth: birthDate.toLocaleString('en-US', { month: 'long' }),
+    birthYear: String(birthDate.getFullYear()),
+    newsletter: faker.datatype.boolean(),
+    specialOffers: faker.datatype.boolean(),
+    firstName,
+    lastName,
+    company: faker.company.name(),
+    address: faker.location.streetAddress(),
+    address2: faker.location.secondaryAddress(),
+    country: faker.helpers.arrayElement(SITE_COUNTRIES),
+    state: faker.location.state(),
+    city: faker.location.city(),
+    zipcode: faker.location.zipCode('#####'),
+    mobileNumber: faker.string.numeric(10),
   };
 }

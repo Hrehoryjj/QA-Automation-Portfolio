@@ -53,3 +53,5 @@ npm run lint                 # ESLint (typescript-eslint + eslint-plugin-playwri
 npm run format:check         # Prettier
 ```
 The Cypress part (`cypress-project/`) needs a Cypress Cloud login, because cy.prompt runs only with it.
+
+**Why the Cypress part has no Page Objects.** `cy.prompt` takes plain-English steps and resolves the elements itself at run time, inside the spec. Wrapping those steps in page objects would hide exactly what the experiment measures: how well the AI command finds elements on its own. That's why `cypress-project/` deliberately keeps its steps, the few verification selectors and the test data in the spec files, unlike the Playwright part, which follows the full rules (Page Object Model, module-level locator constants, Faker data).
