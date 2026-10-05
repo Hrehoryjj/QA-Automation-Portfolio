@@ -1,16 +1,23 @@
 import { expect, type APIRequestContext, type APIResponse } from '@playwright/test';
 import type { UserData } from '../testData/userData';
 
-async function parseJsonOrFail(response: APIResponse, endpoint: string): Promise<{ responseCode: number; message: string }> {
+async function parseJsonOrFail(
+  response: APIResponse,
+  endpoint: string,
+): Promise<{ responseCode: number; message: string }> {
   const bodyText = await response.text();
   const bodyPreview = bodyText.slice(0, 200);
 
-  expect(response.ok(), `${endpoint} returned HTTP ${response.status()}: ${bodyPreview}`).toBe(true);
+  expect(response.ok(), `${endpoint} returned HTTP ${response.status()}: ${bodyPreview}`).toBe(
+    true,
+  );
 
   try {
     return JSON.parse(bodyText);
   } catch {
-    throw new Error(`${endpoint} returned HTTP ${response.status()} with a non-JSON body: ${bodyPreview}`);
+    throw new Error(
+      `${endpoint} returned HTTP ${response.status()} with a non-JSON body: ${bodyPreview}`,
+    );
   }
 }
 
@@ -55,7 +62,11 @@ export async function createUser(request: APIRequestContext, user: UserData): Pr
   expect(body.responseCode, `createAccount failed: ${body.message}`).toBe(201);
 }
 
-export async function deleteUser(request: APIRequestContext, email: string, password: string): Promise<void> {
+export async function deleteUser(
+  request: APIRequestContext,
+  email: string,
+  password: string,
+): Promise<void> {
   const response = await request.delete('/api/deleteAccount', {
     form: { email, password },
   });
@@ -63,7 +74,11 @@ export async function deleteUser(request: APIRequestContext, email: string, pass
   expect(body.responseCode, `deleteAccount failed: ${body.message}`).toBe(200);
 }
 
-export async function deleteUserIfExists(request: APIRequestContext, email: string, password: string): Promise<void> {
+export async function deleteUserIfExists(
+  request: APIRequestContext,
+  email: string,
+  password: string,
+): Promise<void> {
   const response = await request.delete('/api/deleteAccount', {
     form: { email, password },
   });

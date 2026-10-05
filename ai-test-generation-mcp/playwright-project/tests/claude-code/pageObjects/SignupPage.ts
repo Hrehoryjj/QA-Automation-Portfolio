@@ -18,7 +18,9 @@ export class SignupPage extends BasePage {
       await this.page.getByRole('checkbox', { name: 'Sign up for our newsletter!' }).check();
     }
     if (user.specialOffers) {
-      await this.page.getByRole('checkbox', { name: 'Receive special offers from our partners!' }).check();
+      await this.page
+        .getByRole('checkbox', { name: 'Receive special offers from our partners!' })
+        .check();
     }
 
     await this.page.getByTestId('first_name').fill(user.firstName);

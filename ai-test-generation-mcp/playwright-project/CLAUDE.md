@@ -1,10 +1,12 @@
 # Coding Guidelines for Playwright-MCP Project
 
 ## 1. File Interaction
+
 - Always interact only with files located in the `tests/claude-code` folder.
 - Do not read or modify files outside this folder.
 
 ## 2. Page Object Model (POM)
+
 - **MANDATORY**: Every test spec MUST have corresponding page object files.
 - Always use the **Page Object Model (POM)** pattern for structuring UI automation code.
 - Store all page object files in: `tests/claude-code/pageObjects`
@@ -12,10 +14,12 @@
 - All locators and page interactions must be defined in page objects, not in spec files.
 
 ## 3. Spec Files
+
 - Always create spec/test files in: `tests/claude-code/specs`.
 - Do not place spec files outside this folder.
 
 ## 4. MCP Usage
+
 - All navigation, assertion, AND LOCATOR DISCOVERY must be performed via playwright-mcp.
 - Use MCP browser/inspector to derive selectors, do not guess or hardcode without MCP validation.
 - For every new/changed locator:
@@ -23,29 +27,70 @@
   - Prefer role/name, label, placeholder, accessible names, or test IDs exposed in DOM.
 
 ## 5. Prevent Auto-Generated / Random Spec Files
+
 - Do not allow LLM or MCP to create random spec files like urltest_<uuid>.spec.
 - Ensure AI-generated spec files are only created in `tests/claude-code/specs`.
 
 ## 6. General Notes
+
 - Follow consistent naming conventions for pages and specs.
 - Keep code modular and reusable within the defined folder structure.
 - Review MCP logs to debug test execution if necessary.
 
 ## 7. Locators
+
 - Never resolve locators inside the constructor — declare them as constants or resolve them fresh inside each method call, so they don't go stale after DOM changes.
 - Locators must never appear in spec files — only inside page objects; if a spec needs to assert on an element, expose a method on the page object that returns it (e.g. `getErrorLabel()`).
 
 ## 8. Assertions
+
 - All verification must use `expect(...)` — never `console.log` for validating results.
 
 ## 9. Config
+
 - `baseURL` must be set in `playwright.config.ts`; tests use relative paths via `page.goto('/path')`, never hardcoded full URLs.
 
 ## 10. Clean Code
+
 - No commented-out code, no leftover debug statements, no stray console.log calls in committed code.
 
 ## 11. Scope exceptions
+
 - Rule 1 confines routine work to `tests/claude-code`. Project-level config files at the project
   root (`playwright.config.ts`, `tsconfig.json`, `package.json`) may be edited only when the
   prompt for that session explicitly asks for it — never as an incidental side effect of writing
   specs or page objects.
+
+## 12. Waits
+
+- Never use `page.waitForTimeout()`, `setTimeout` or any fixed sleep.
+- Rely on Playwright auto-waiting and web-first assertions (`await expect(locator).toHaveText(...)`); wait for a concrete state (`toBeVisible`, `toHaveURL`, `waitForResponse`) when one is needed.
+
+## 13. Assertion Specificity
+
+- Assert the exact expected value: `toHaveText`, `toHaveValue`, `toHaveURL`, `toHaveCount`, `toHaveAttribute`.
+- `toBeVisible()` alone is allowed only for steps whose test-case wording is "is visible"; any element with known text, count or URL must be checked against that value.
+- One behaviour per assertion message; never assert with `console.log`, `if` statements or `try/catch`.
+
+## 14. Test Data
+
+- Generate per-run data (users, emails, messages) with functions in `tests/claude-code/testData`; never hardcode the same values in several specs.
+- Accounts and other server-side state are created and removed by fixtures (via `tests/claude-code/api`), so cleanup runs even when the test fails.
+- No secrets or real credentials in code; read them from environment variables.
+
+## 15. Naming Conventions and Folder Layout
+
+- Page objects: PascalCase class named after the page plus `Page`, one class per file of the same name (`LoginPage.ts`); shared logic in `BasePage.ts`.
+- Specs: kebab-case named after the test case, `*.spec.ts` (`login-invalid.spec.ts`); `test()` titles describe the expected behaviour.
+- Methods: camelCase; actions start with a verb (`fillLoginForm`, `clickSignup`), locator getters start with `get` (`getErrorLabel`).
+- Folders inside `tests/claude-code`:
+  - `pageObjects/` - page classes only;
+  - `specs/` - spec files only;
+  - `fixtures/` - the extended `test` object and its fixtures; specs import `test`/`expect` from here, not from `@playwright/test`;
+  - `api/` - API helpers used by fixtures;
+  - `testData/` - data types and generators.
+
+## 16. Lint and Format
+
+- Code must pass `npm run lint` (ESLint with typescript-eslint and eslint-plugin-playwright) and `npm run format:check` (Prettier) before it is considered done.
+- Never disable a lint rule inline to make code pass.

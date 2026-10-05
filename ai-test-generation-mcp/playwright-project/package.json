@@ -6,11 +6,19 @@
     "test:claude": "playwright test tests/claude-code",
     "test:cursor": "playwright test tests/cursor",
     "test:stability": "playwright test --repeat-each=10 --retries=0",
-    "report": "playwright show-report"
+    "report": "playwright show-report",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.5",
     "@playwright/test": "^1.49.0",
     "@types/node": "^22.20.4",
-    "typescript": "^5.7.2"
+    "eslint": "^9.39.5",
+    "eslint-plugin-playwright": "^2.12.1",
+    "prettier": "^3.9.9",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.71.0"
   }
 }

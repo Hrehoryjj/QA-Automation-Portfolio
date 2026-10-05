@@ -13,5 +13,7 @@ test('TC-05 Verify Subscription in home page', async ({ page }) => {
   await homePage.clickSubscribeButton();
 
   await expect(homePage.getSubscriptionSuccessMessage()).toBeVisible();
-  await expect(homePage.getSubscriptionSuccessMessage()).toHaveText('You have been successfully subscribed!');
+  await expect(homePage.getSubscriptionSuccessMessage()).toHaveText(
+    'You have been successfully subscribed!',
+  );
 });
