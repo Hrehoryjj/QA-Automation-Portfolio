@@ -11,7 +11,7 @@ def test_login_with_invalid_credentials(login_page: LoginPage, data: DataGenerat
     with allure.step("Submit credentials that do not belong to any account"):
         login_page.open()
         expect(login_page.login_heading()).to_have_text("Login to your account")
-        login_page.login(data.random_email(), "wrong-password")
+        login_page.login(data.random_email(), data.password())
 
     with allure.step("An error is shown and the user stays logged out"):
         expect(login_page.login_error()).to_have_text("Your email or password is incorrect!")

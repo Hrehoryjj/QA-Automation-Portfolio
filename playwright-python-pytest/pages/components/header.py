@@ -3,41 +3,41 @@ from playwright.sync_api import Locator, Page
 
 from utils.allure_helpers import attach_screenshot
 
+SIGNUP_LOGIN = "a[href='/login']"
+LOGOUT = "a[href='/logout']"
+DELETE_ACCOUNT = "a[href='/delete_account']"
+LOGGED_IN_AS = "a:has-text('Logged in as')"
+PRODUCTS = "a[href='/products']"
+CART = "a[href='/view_cart']"
+
 
 class Header:
-    SIGNUP_LOGIN = "a[href='/login']"
-    LOGOUT = "a[href='/logout']"
-    DELETE_ACCOUNT = "a[href='/delete_account']"
-    LOGGED_IN_AS = "a:has-text('Logged in as')"
-    PRODUCTS = "a[href='/products']"
-    CART = "a[href='/view_cart']"
-
     def __init__(self, page: Page) -> None:
         self.page = page
 
     def logged_in_as(self) -> Locator:
-        return self.page.locator(self.LOGGED_IN_AS)
+        return self.page.locator(LOGGED_IN_AS)
 
     def logout_link(self) -> Locator:
-        return self.page.locator(self.LOGOUT)
+        return self.page.locator(LOGOUT)
 
     def go_to_signup_login(self) -> None:
         with allure.step("Header: open Signup / Login"):
-            self.page.click(self.SIGNUP_LOGIN)
+            self.page.click(SIGNUP_LOGIN)
 
     def logout(self) -> None:
         with allure.step("Header: log out"):
-            self.page.click(self.LOGOUT)
+            self.page.click(LOGOUT)
 
     def delete_account(self) -> None:
         with allure.step("Header: delete account"):
-            self.page.click(self.DELETE_ACCOUNT)
+            self.page.click(DELETE_ACCOUNT)
             attach_screenshot(self.page, "Account deleted")
 
     def go_to_products(self) -> None:
         with allure.step("Header: go to Products page"):
-            self.page.click(self.PRODUCTS)
+            self.page.click(PRODUCTS)
 
     def go_to_cart(self) -> None:
         with allure.step("Header: go to Cart page"):
-            self.page.click(self.CART)
+            self.page.click(CART)

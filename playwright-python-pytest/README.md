@@ -50,7 +50,7 @@ pytest                             # all tests in Chromium
 pytest --browser firefox           # another browser
 pytest -k tc09                     # a single test
 ```
-Open the report (requires Java and `npm i -g allure-commandline`):
+Open the report (requires Java and Node.js; `npx` runs Allure without a global install):
 ```bash
-allure serve allure-results
+npx allure-commandline serve allure-results
 ```

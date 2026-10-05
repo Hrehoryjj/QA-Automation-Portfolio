@@ -77,6 +77,12 @@ class DataGenerator:
             expiry_year=str(random.randint(this_year + 1, this_year + 5)),
         )
 
+    def password(self) -> str:
+        return fake.password(length=12)
+
+    def contact_subject(self) -> str:
+        return fake.sentence(nb_words=4)
+
     def review_text(self) -> str:
         return fake.sentence(nb_words=10)
 

@@ -19,7 +19,7 @@ def test_contact_us_form_with_upload(page, data):
         contact_page.fill_form(
             name=data.new_user().name,
             email=data.random_email(),
-            subject="Automated check",
+            subject=data.contact_subject(),
             message=data.contact_message(),
         )
         contact_page.upload_file(str(ATTACHMENT))
