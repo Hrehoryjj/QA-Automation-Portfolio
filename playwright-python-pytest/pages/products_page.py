@@ -3,6 +3,7 @@ from playwright.sync_api import Locator
 
 from pages.base_page import BasePage
 from utils.allure_helpers import attach_screenshot
+from utils.text import clean
 
 
 class ProductsPage(BasePage):
@@ -38,14 +39,15 @@ class ProductsPage(BasePage):
     def cards(self) -> Locator:
         return self.page.locator(self.PRODUCT_CARDS)
 
-    def product_names(self) -> list[str]:
-        return [name.strip() for name in self.cards().locator(self.PRODUCT_NAME).all_inner_texts()]
+    def product_ids(self) -> list[int]:
+        ids = self.cards().locator(self.ADD_TO_CART).evaluate_all("links => links.map(link => link.dataset.productId)")
+        return [int(product_id) for product_id in ids]
 
     def product_summary(self, index: int) -> dict[str, str]:
         card = self.cards().nth(index)
         return {
-            "name": card.locator(self.PRODUCT_NAME).inner_text().strip(),
-            "price": card.locator(self.PRODUCT_PRICE).inner_text().strip(),
+            "name": clean(card.locator(self.PRODUCT_NAME).inner_text()),
+            "price": clean(card.locator(self.PRODUCT_PRICE).inner_text()),
         }
 
     def open_product(self, index: int = 0) -> None:

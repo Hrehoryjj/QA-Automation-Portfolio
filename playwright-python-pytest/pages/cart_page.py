@@ -3,6 +3,7 @@ from playwright.sync_api import Locator
 
 from pages.base_page import BasePage
 from utils.allure_helpers import attach_screenshot
+from utils.text import clean
 
 
 class CartPage(BasePage):
@@ -24,10 +25,10 @@ class CartPage(BasePage):
     def row_details(self) -> list[dict[str, str]]:
         return [
             {
-                "name": row.locator(self.ROW_NAME).inner_text().strip(),
-                "price": row.locator(self.ROW_PRICE).inner_text().strip(),
-                "quantity": row.locator(self.ROW_QUANTITY).inner_text().strip(),
-                "total": row.locator(self.ROW_TOTAL).inner_text().strip(),
+                "name": clean(row.locator(self.ROW_NAME).inner_text()),
+                "price": clean(row.locator(self.ROW_PRICE).inner_text()),
+                "quantity": clean(row.locator(self.ROW_QUANTITY).inner_text()),
+                "total": clean(row.locator(self.ROW_TOTAL).inner_text()),
             }
             for row in self.rows().all()
         ]

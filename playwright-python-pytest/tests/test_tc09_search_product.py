@@ -18,7 +18,7 @@ def test_search_product(products_page: ProductsPage):
 
     with allure.step(f"Get the expected results for '{SEARCH_TERM}' from the search API"):
         response = products_page.page.request.post(SEARCH_API, form={"search_product": SEARCH_TERM})
-        expected = sorted(product["name"] for product in response.json()["products"])
+        expected = sorted(product["id"] for product in response.json()["products"])
         assert 0 < len(expected) < catalogue_size, expected
 
     products_page.search(SEARCH_TERM)
@@ -26,5 +26,5 @@ def test_search_product(products_page: ProductsPage):
     with allure.step("Searched Products shows exactly the expected products"):
         expect(products_page.searched_products_heading()).to_be_visible()
         expect(products_page.cards()).to_have_count(len(expected))
-        assert sorted(products_page.product_names()) == expected
+        assert sorted(products_page.product_ids()) == expected
         attach_screenshot(products_page.page, "Filtered search results", full_page=True)
