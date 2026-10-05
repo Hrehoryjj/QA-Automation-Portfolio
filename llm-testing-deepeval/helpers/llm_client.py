@@ -6,7 +6,8 @@ from openai import OpenAI
 load_dotenv()
 
 DEFAULT_BASE_URL = os.getenv("LOCAL_LLM_BASE_URL", "http://localhost:11434/v1")
-DEFAULT_MODEL = os.getenv("LOCAL_LLM_MODEL", "qwen2.5:0.5b")
+DEFAULT_MODEL = os.getenv("LOCAL_LLM_MODEL", "llama3.2:3b")
+DEFAULT_JUDGE_MODEL = os.getenv("LOCAL_JUDGE_MODEL", "qwen2.5:7b-instruct")
 DEFAULT_API_KEY = os.getenv("LOCAL_LLM_API_KEY", "ollama")
 
 
@@ -26,7 +27,7 @@ def generate_response(prompt: str, model: str = DEFAULT_MODEL, temperature: floa
 
 class LocalLLM(DeepEvalBaseLLM):
 
-    def __init__(self, base_url=DEFAULT_BASE_URL, model=DEFAULT_MODEL, api_key=DEFAULT_API_KEY):
+    def __init__(self, base_url=DEFAULT_BASE_URL, model=DEFAULT_JUDGE_MODEL, api_key=DEFAULT_API_KEY):
         self.base_url = base_url
         self.model_name = model
         self.api_key = api_key
@@ -51,4 +52,4 @@ class LocalLLM(DeepEvalBaseLLM):
         return self.generate(prompt, schema=schema)
 
     def get_model_name(self) -> str:
-        return f"Local model ({self.model_name})"
+        return f"Local judge ({self.model_name})"

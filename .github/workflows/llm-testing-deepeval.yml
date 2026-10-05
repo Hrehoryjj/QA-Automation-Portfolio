@@ -24,8 +24,10 @@ jobs:
         working-directory: llm-testing-deepeval
     env:
       LOCAL_LLM_BASE_URL: http://localhost:11434/v1
-      LOCAL_LLM_MODEL: qwen2.5:7b-instruct
+      LOCAL_LLM_MODEL: llama3.2:3b
+      LOCAL_JUDGE_MODEL: qwen2.5:7b-instruct
       LOCAL_LLM_API_KEY: ollama
+      CONFIDENT_API_KEY: ${{ secrets.CONFIDENT_API_KEY }}
       DEEPEVAL_PER_TASK_TIMEOUT_SECONDS_OVERRIDE: '600'
     steps:
       - uses: actions/checkout@v4
@@ -50,16 +52,20 @@ jobs:
             sleep 2
           done
 
-      - name: Pull model
-        run: ollama pull "$LOCAL_LLM_MODEL"
+      - name: Pull model under test and judge model
+        run: |
+          ollama pull "$LOCAL_LLM_MODEL"
+          ollama pull "$LOCAL_JUDGE_MODEL"
 
       - name: Run tests
-        run: pytest -v --reruns 1 --reruns-delay 5 --junitxml=report.xml
+        run: pytest -v --reruns 1 --reruns-delay 5 --junitxml=report.xml --html=report.html --self-contained-html
 
       - name: Upload test report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: report
-          path: llm-testing-deepeval/report.xml
+          path: |
+            llm-testing-deepeval/report.html
+            llm-testing-deepeval/report.xml
           retention-days: 7

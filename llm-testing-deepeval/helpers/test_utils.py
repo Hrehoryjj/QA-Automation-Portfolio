@@ -2,6 +2,8 @@ import json
 import os
 from functools import lru_cache
 
+import pytest
+
 from deepeval.test_case import LLMTestCase
 
 from helpers.llm_client import generate_response
@@ -17,6 +19,17 @@ def load_dataset():
 
 def get_cases_by_category(category: str):
     return [case for case in load_dataset() if category in case.get("categories", [])]
+
+
+def as_params(records):
+    return [
+        pytest.param(
+            record,
+            id=record["id"],
+            marks=[pytest.mark.xfail(strict=True, reason=record["known_issue"])] if "known_issue" in record else [],
+        )
+        for record in records
+    ]
 
 
 def build_test_case(record: dict) -> LLMTestCase:

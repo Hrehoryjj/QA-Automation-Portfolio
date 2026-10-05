@@ -1,5 +1,6 @@
-deepeval
-pytest
-pytest-rerunfailures
-openai
-python-dotenv
+deepeval==4.2.8
+openai==3.24.0
+pytest==9.1.1
+pytest-html==4.2.0
+pytest-rerunfailures==16.7
+python-dotenv==1.2.4

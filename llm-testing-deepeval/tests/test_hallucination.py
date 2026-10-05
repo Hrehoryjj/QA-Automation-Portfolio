@@ -1,20 +1,12 @@
 import pytest
 from deepeval import assert_test
-from deepeval.metrics import HallucinationMetric
 
-from helpers.llm_client import LocalLLM
-from helpers.test_utils import get_cases_by_category, build_test_case
+from helpers.metrics import hallucination_metric
+from helpers.test_utils import as_params, build_test_case, get_cases_by_category
 
-judge_model = LocalLLM()
-
-hallucination_metric = HallucinationMetric(threshold=0.7, model=judge_model, include_reason=True)
-
-hallucination_records = get_cases_by_category("hallucination")
+records = get_cases_by_category("hallucination")
 
 
-@pytest.mark.parametrize(
-    "record", hallucination_records, ids=[r["id"] for r in hallucination_records]
-)
+@pytest.mark.parametrize("record", as_params(records))
 def test_hallucination(record):
-    test_case = build_test_case(record)
-    assert_test(test_case, [hallucination_metric])
+    assert_test(build_test_case(record), [hallucination_metric()])
