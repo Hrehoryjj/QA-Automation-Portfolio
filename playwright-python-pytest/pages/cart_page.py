@@ -1,4 +1,5 @@
 import allure
+from playwright.sync_api import Locator
 
 from pages.base_page import BasePage
 from utils.allure_helpers import attach_screenshot
@@ -17,8 +18,22 @@ class CartPage(BasePage):
     EMPTY_CART = "#empty_cart"
     REGISTER_LOGIN_LINK = "div.modal-content a[href='/login']"
 
-    def rows(self):
+    def rows(self) -> Locator:
         return self.page.locator(self.CART_ROWS)
+
+    def row_details(self) -> list[dict[str, str]]:
+        return [
+            {
+                "name": row.locator(self.ROW_NAME).inner_text().strip(),
+                "price": row.locator(self.ROW_PRICE).inner_text().strip(),
+                "quantity": row.locator(self.ROW_QUANTITY).inner_text().strip(),
+                "total": row.locator(self.ROW_TOTAL).inner_text().strip(),
+            }
+            for row in self.rows().all()
+        ]
+
+    def empty_cart(self) -> Locator:
+        return self.page.locator(self.EMPTY_CART)
 
     def remove_product(self, index: int = 0) -> None:
         with allure.step(f"Remove product #{index + 1} from the cart"):

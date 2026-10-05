@@ -5,20 +5,14 @@ from pages.cart_page import CartPage
 from pages.products_page import ProductsPage
 
 
-def _normalize(values: list[str]) -> list[str]:
-    return sorted(" ".join(value.split()) for value in values)
-
-
 @allure.feature("Cart")
-@allure.title("Add two products to the cart")
+@allure.title("Add two products to the cart and verify price, quantity and total")
 def test_add_products_to_cart(products_page: ProductsPage):
-    page = products_page.page
-    cart_page = CartPage(page)
+    cart_page = CartPage(products_page.page)
 
-    with allure.step("Remember the first two product names"):
+    with allure.step("Remember the first two products"):
         products_page.open()
-        names = products_page.cards().locator(ProductsPage.PRODUCT_NAME)
-        expected = [names.nth(0).inner_text(), names.nth(1).inner_text()]
+        expected = [products_page.product_summary(0), products_page.product_summary(1)]
 
     with allure.step("Add both products to the cart"):
         products_page.add_product_to_cart(0)
@@ -26,7 +20,10 @@ def test_add_products_to_cart(products_page: ProductsPage):
         products_page.add_product_to_cart(1)
         products_page.go_to_cart_from_modal()
 
-    with allure.step("Both products are listed in the cart"):
+    with allure.step("Each product is in the cart once, with its price and a matching total"):
         expect(cart_page.rows()).to_have_count(2)
-        cart_names = cart_page.rows().locator(CartPage.ROW_NAME)
-        assert _normalize(cart_names.all_inner_texts()) == _normalize(expected)
+        rows = cart_page.row_details()
+        assert [{"name": r["name"], "price": r["price"]} for r in rows] == expected
+        for row in rows:
+            assert row["quantity"] == "1", row
+            assert row["total"] == row["price"], row

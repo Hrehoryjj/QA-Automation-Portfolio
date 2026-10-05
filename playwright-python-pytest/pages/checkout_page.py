@@ -1,4 +1,5 @@
 import allure
+from playwright.sync_api import Locator
 
 from pages.base_page import BasePage
 from utils.allure_helpers import attach_screenshot
@@ -12,6 +13,15 @@ class CheckoutPage(BasePage):
     ORDER_ITEMS = "#cart_info tbody tr"
     COMMENT = "textarea[name='message']"
     PLACE_ORDER_BUTTON = "a[href='/payment']"
+
+    def delivery_address(self) -> Locator:
+        return self.page.locator(self.DELIVERY_ADDRESS)
+
+    def invoice_address(self) -> Locator:
+        return self.page.locator(self.INVOICE_ADDRESS)
+
+    def order_items(self) -> Locator:
+        return self.page.locator(self.ORDER_ITEMS)
 
     def add_comment(self, text: str) -> None:
         with allure.step("Add an order comment"):

@@ -1,5 +1,5 @@
 import allure
-from playwright.sync_api import Page
+from playwright.sync_api import Locator, Page
 
 from utils.allure_helpers import attach_screenshot
 
@@ -14,6 +14,12 @@ class Header:
 
     def __init__(self, page: Page) -> None:
         self.page = page
+
+    def logged_in_as(self) -> Locator:
+        return self.page.locator(self.LOGGED_IN_AS)
+
+    def logout_link(self) -> Locator:
+        return self.page.locator(self.LOGOUT)
 
     def go_to_signup_login(self) -> None:
         with allure.step("Header: open Signup / Login"):

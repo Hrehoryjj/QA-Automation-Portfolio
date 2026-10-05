@@ -12,10 +12,10 @@ ATTACHMENT = Path(__file__).parent / "data" / "sample.txt"
 @allure.title("Submit the Contact Us form with a file attachment")
 def test_contact_us_form_with_upload(page, data):
     contact_page = ContactUsPage(page)
-    page.on("dialog", lambda dialog: dialog.accept())
 
     with allure.step("Fill and submit the form with an attached file"):
         contact_page.open()
+        expect(contact_page.get_in_touch_heading()).to_have_text("Get In Touch")
         contact_page.fill_form(
             name=data.new_user().name,
             email=data.random_email(),
@@ -26,6 +26,6 @@ def test_contact_us_form_with_upload(page, data):
         contact_page.submit()
 
     with allure.step("A success message is shown"):
-        expect(page.locator(ContactUsPage.SUCCESS_MESSAGE)).to_contain_text(
+        expect(contact_page.success_message()).to_have_text(
             "Success! Your details have been submitted successfully."
         )

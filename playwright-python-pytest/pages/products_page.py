@@ -1,4 +1,5 @@
 import allure
+from playwright.sync_api import Locator
 
 from pages.base_page import BasePage
 from utils.allure_helpers import attach_screenshot
@@ -14,6 +15,7 @@ class ProductsPage(BasePage):
 
     PRODUCT_CARDS = "div.features_items div.product-image-wrapper"
     PRODUCT_NAME = "div.productinfo p"
+    PRODUCT_PRICE = "div.productinfo h2"
     VIEW_PRODUCT_LINK = "a:has-text('View Product')"
     ADD_TO_CART = "div.productinfo a.add-to-cart"
 
@@ -27,8 +29,24 @@ class ProductsPage(BasePage):
             self.page.click(self.SEARCH_BUTTON)
             attach_screenshot(self.page, f"Search results for '{term}'")
 
-    def cards(self):
+    def all_products_heading(self) -> Locator:
+        return self.page.locator(self.ALL_PRODUCTS_HEADING)
+
+    def searched_products_heading(self) -> Locator:
+        return self.page.locator(self.SEARCHED_PRODUCTS_HEADING)
+
+    def cards(self) -> Locator:
         return self.page.locator(self.PRODUCT_CARDS)
+
+    def product_names(self) -> list[str]:
+        return [name.strip() for name in self.cards().locator(self.PRODUCT_NAME).all_inner_texts()]
+
+    def product_summary(self, index: int) -> dict[str, str]:
+        card = self.cards().nth(index)
+        return {
+            "name": card.locator(self.PRODUCT_NAME).inner_text().strip(),
+            "price": card.locator(self.PRODUCT_PRICE).inner_text().strip(),
+        }
 
     def open_product(self, index: int = 0) -> None:
         with allure.step(f"Open detail page of product #{index + 1}"):

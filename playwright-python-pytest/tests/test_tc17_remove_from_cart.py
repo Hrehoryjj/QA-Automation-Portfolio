@@ -8,8 +8,7 @@ from pages.products_page import ProductsPage
 @allure.feature("Cart")
 @allure.title("Remove a product from the cart")
 def test_remove_product_from_cart(products_page: ProductsPage):
-    page = products_page.page
-    cart_page = CartPage(page)
+    cart_page = CartPage(products_page.page)
 
     with allure.step("Add one product and open the cart"):
         products_page.open()
@@ -21,5 +20,5 @@ def test_remove_product_from_cart(products_page: ProductsPage):
         cart_page.remove_product(0)
 
     with allure.step("The cart is empty"):
-        expect(page.locator(CartPage.EMPTY_CART)).to_be_visible()
+        expect(cart_page.empty_cart()).to_be_visible()
         expect(cart_page.rows()).to_have_count(0)

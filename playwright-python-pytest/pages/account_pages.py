@@ -1,4 +1,5 @@
 import allure
+from playwright.sync_api import Locator
 
 from pages.base_page import BasePage
 from utils.allure_helpers import attach_screenshot
@@ -9,6 +10,9 @@ class AccountCreatedPage(BasePage):
 
     HEADING = "b:has-text('Account Created!')"
     CONTINUE_BUTTON = "a[data-qa='continue-button']"
+
+    def heading(self) -> Locator:
+        return self.page.locator(self.HEADING)
 
     def click_continue(self) -> None:
         with allure.step("Continue after account creation"):
@@ -21,6 +25,9 @@ class AccountDeletedPage(BasePage):
 
     HEADING = "b:has-text('Account Deleted!')"
     CONTINUE_BUTTON = "a[data-qa='continue-button']"
+
+    def heading(self) -> Locator:
+        return self.page.locator(self.HEADING)
 
     def click_continue(self) -> None:
         with allure.step("Continue after account deletion"):

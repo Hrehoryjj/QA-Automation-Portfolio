@@ -59,12 +59,19 @@ jobs:
           path: playwright-python-pytest/allure-results
           retention-days: 7
 
+      - name: Upload Playwright traces
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: traces-${{ matrix.browser }}
+          path: playwright-python-pytest/test-results
+          if-no-files-found: ignore
+          retention-days: 7
+
   report:
     needs: test
     if: always()
     runs-on: ubuntu-latest
-    env:
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     steps:
       - name: Collect Allure results from all browsers
         uses: actions/download-artifact@v4
@@ -116,14 +123,3 @@ jobs:
           publish_dir: allure-report
           destination_dir: playwright-python-pytest
 
-      - name: Notify Slack
-        if: ${{ always() && env.SLACK_WEBHOOK_URL != '' }}
-        continue-on-error: true
-        uses: slackapi/slack-github-action@v2.0.0
-        with:
-          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
-          webhook-type: incoming-webhook
-          payload: |
-            {
-              "text": "*Playwright (Python + pytest)* - tests: `${{ needs.test.result }}`\nReport: https://hrehoryjj.github.io/QA-Automation-Portfolio/playwright-python-pytest/\nRun: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-            }

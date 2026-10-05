@@ -1,4 +1,5 @@
 import allure
+from playwright.sync_api import Locator
 
 from pages.base_page import BasePage
 from pages.signup_page import SignupPage
@@ -19,6 +20,15 @@ class LoginPage(BasePage):
     SIGNUP_NAME_INPUT = "input[data-qa='signup-name']"
     SIGNUP_EMAIL_INPUT = "input[data-qa='signup-email']"
     SIGNUP_BUTTON = "button[data-qa='signup-button']"
+
+    def login_heading(self) -> Locator:
+        return self.page.locator(self.LOGIN_HEADING)
+
+    def signup_heading(self) -> Locator:
+        return self.page.locator(self.SIGNUP_HEADING)
+
+    def login_error(self) -> Locator:
+        return self.page.locator(self.LOGIN_ERROR)
 
     def login(self, email: str, password: str) -> None:
         with allure.step(f"Log in as {email}"):

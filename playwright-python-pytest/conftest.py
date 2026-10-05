@@ -10,7 +10,7 @@ from pages.cart_page import CartPage
 from pages.home_page import HomePage
 from pages.login_page import LoginPage
 from pages.products_page import ProductsPage
-from utils.data_generator import DataGenerator
+from utils.data_generator import DataGenerator, UserData
 
 load_dotenv()
 
@@ -35,6 +35,17 @@ def block_consent(page: Page):
 @pytest.fixture
 def data() -> DataGenerator:
     return DataGenerator()
+
+
+@pytest.fixture
+def new_user(page: Page, data: DataGenerator):
+    user: UserData = data.new_user()
+    yield user
+    with allure.step(f"Teardown: make sure the account {user.email} is deleted"):
+        page.request.delete(
+            f"{SITE_URL}/api/deleteAccount",
+            form={"email": user.email, "password": user.password},
+        )
 
 
 @pytest.fixture
@@ -79,11 +90,11 @@ def logged_in_page(page: Page, existing_user: tuple[str, str]) -> HomePage:
 def pytest_runtest_makereport(item, call):
     outcome = yield
     report = outcome.get_result()
-    if report.when == "call" and report.failed:
+    if report.when == "call":
         page: Page | None = item.funcargs.get("page")
-        if page is not None:
+        if page is not None and not page.is_closed():
             allure.attach(
                 page.screenshot(full_page=True),
-                name="failure-state",
+                name="final-state",
                 attachment_type=allure.attachment_type.PNG,
             )

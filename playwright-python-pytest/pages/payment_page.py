@@ -1,4 +1,5 @@
 import allure
+from playwright.sync_api import Locator
 
 from pages.base_page import BasePage
 from utils.allure_helpers import attach_screenshot
@@ -16,7 +17,13 @@ class PaymentPage(BasePage):
     PAY_BUTTON = "button[data-qa='pay-button']"
 
     ORDER_PLACED_HEADING = "h2[data-qa='order-placed']"
-    ORDER_CONFIRMATION = "p:has-text('Your order has been placed successfully')"
+    ORDER_CONFIRMATION = "p:has-text('Congratulations! Your order has been confirmed!')"
+
+    def order_placed_heading(self) -> Locator:
+        return self.page.locator(self.ORDER_PLACED_HEADING)
+
+    def order_confirmation(self) -> Locator:
+        return self.page.locator(self.ORDER_CONFIRMATION)
 
     def pay(self, payment: PaymentData) -> None:
         with allure.step("Fill card details and pay"):

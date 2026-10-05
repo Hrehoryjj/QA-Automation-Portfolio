@@ -1,4 +1,5 @@
 import allure
+from playwright.sync_api import Locator
 
 from pages.base_page import BasePage
 from utils.allure_helpers import attach_screenshot
@@ -28,6 +29,9 @@ class SignupPage(BasePage):
     ZIPCODE = "input[data-qa='zipcode']"
     MOBILE_NUMBER = "input[data-qa='mobile_number']"
     CREATE_ACCOUNT_BUTTON = "button[data-qa='create-account']"
+
+    def account_info_heading(self) -> Locator:
+        return self.page.locator(self.ACCOUNT_INFO_HEADING)
 
     def fill_account_info(self, user: UserData) -> None:
         with allure.step(f"Fill account information for {user.name}"):

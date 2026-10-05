@@ -6,7 +6,7 @@ This repository collects my test automation projects: web, API, mobile and AI te
 
 ## Start here
 Short on time? These three show the most in five minutes:
-1. **[playwright-python-pytest](playwright-python-pytest)** - full regression of an online shop on three browsers, parallel runs, Allure report and Slack alerts.
+1. **[playwright-python-pytest](playwright-python-pytest)** - full regression of an online shop on three browsers, parallel runs and an Allure report.
 2. **[webdriverio-typescript](webdriverio-typescript)** - E2E suite that runs the same way locally and in CI thanks to Docker.
 3. **[ai-test-generation-mcp](ai-test-generation-mcp)** - AI agents writing tests, and how their output was verified before it was trusted.
 
@@ -23,7 +23,7 @@ All latest reports in one place: **[test reports page](https://hrehoryjj.github.
 | Project | What it shows | Stack | Report |
 |---|---|---|---|
 | [playwright-typescript](playwright-typescript) | UI tests for a project management web app | Playwright, TypeScript, Allure | [Report](https://hrehoryjj.github.io/QA-Automation-Portfolio/playwright-typescript/) |
-| [playwright-python-pytest](playwright-python-pytest) | Cross-browser regression of an online shop, Slack alerts | Playwright, Python, pytest, Allure | [Report](https://hrehoryjj.github.io/QA-Automation-Portfolio/playwright-python-pytest/) |
+| [playwright-python-pytest](playwright-python-pytest) | Cross-browser regression of an online shop | Playwright, Python, pytest, Allure | [Report](https://hrehoryjj.github.io/QA-Automation-Portfolio/playwright-python-pytest/) |
 | [cypress-typescript](cypress-typescript) | UI tests for a company marketing website | Cypress, TypeScript, Allure | [Report](https://hrehoryjj.github.io/QA-Automation-Portfolio/cypress-typescript/) |
 | [cypress-cucumber-bdd](cypress-cucumber-bdd) | Tests written as plain-English scenarios (BDD) | Cypress, Cucumber, TypeScript | [Report](https://hrehoryjj.github.io/QA-Automation-Portfolio/cypress-cucumber-bdd/) |
 | [webdriverio-typescript](webdriverio-typescript) | E2E tests running in Docker | WebdriverIO, TypeScript, Docker, Allure | [Report](https://hrehoryjj.github.io/QA-Automation-Portfolio/webdriverio-typescript/) |

@@ -6,7 +6,7 @@
 A regression suite for **automationexercise.com**, a public demo online shop. The tests drive a real browser like a shopper: sign up, log in, search, add to cart, check out, leave a review, contact support.
 
 ## Why it matters
-These are the journeys that make or lose money in an online shop. The suite checks all of them on **three browsers (Chrome, Firefox, Safari engine)** on every change, and sends a summary to Slack, so the team learns about a broken checkout from a report, not from customers.
+These are the journeys that make or lose money in an online shop. The suite checks all of them on **three browsers (Chrome, Firefox, Safari engine)** on every change and publishes an Allure report, so the team learns about a broken checkout from a report, not from customers.
 
 ## What is tested
 | Scenario | Why it matters |
@@ -28,11 +28,13 @@ These are the journeys that make or lose money in an online shop. The suite chec
 | Browsers | Chromium, Firefox, WebKit |
 | Structure | Page Object Model |
 | Test data | Faker: a fresh random user, card and review on every run |
-| Report | Allure, with steps, screenshots and trend history |
-| CI/CD | GitHub Actions + Slack notification, credentials in GitHub Secrets |
+| Report | Allure, with steps, a final-state screenshot of every test and trend history |
+| CI/CD | GitHub Actions, credentials in GitHub Secrets |
 
 ## Test report
 Latest report: **[https://hrehoryjj.github.io/QA-Automation-Portfolio/playwright-python-pytest/](https://hrehoryjj.github.io/QA-Automation-Portfolio/playwright-python-pytest/)**
+
+Every test ends with a screenshot of its final page state. When a test fails in CI, its Playwright trace is attached to the run as the `traces-<browser>` artifact; open it with `playwright show-trace <trace.zip>`.
 
 ## Run it locally
 Requires Python 3.11+ and Git.
